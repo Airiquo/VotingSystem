@@ -2,8 +2,8 @@ REMINDERS
 
 ### Naming conventions
 - make it make sense
-1. Variables - snake_case
-2. Method / Functions - PascalCase
+1. Variables | ID - snake_case
+2. Method / Functions - camelCase
 
 
 ### CSS and HTML alignment

@@ -2,26 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="control/jquery.js"></script>
+    <script src="view/jquery.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="view/styles/regform.css">
+    <link rel="stylesheet" href="view/styles/register.css">
     <title>Document</title>
 </head>
 <body>
     <h1 id="title">Brainrot School Voting System</h1>
-    <div id="regForm">
+    <div id="registerform">
+
+
         <input type="hidden" id="id">
-        <input type="text" id="firstName" placeholder="FirstName">
-        <input type="text" id="middleName" placeholder="MiddleName">
-        <input type="text" id="lastName" placeholder="LastName">
-        <input type="text" id="studentCourse" placeholder="Course">
-
-
-
-        <button id="regBtn">Register</button>
-
-
-        
+        <label>First Name</label>
+        <input type="text" id="firstname" placeholder="FirstName">   
+        <label>Middle Name</label>
+        <input type="text" id="middlename" placeholder="MiddleName"> 
+        <labe>Last Name</label>
+        <input type="text" id="lastname" placeholder="LastName"> 
+        <labe>Password</label>
+        <input type="text" id="password" placeholder="Password">
+        <label>Course</label>
+        <input type="text" id="studentcourse" placeholder="Course">
+        <label>StudentID</label>
+        <input type="text" id="studentid" placeholder="StudentID">
+        <button id="registerBtn">Register</button>
     </div>
 
     <script src="control/auth.js"></script>

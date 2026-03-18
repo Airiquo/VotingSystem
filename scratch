@@ -1,0 +1,24 @@
+/* 
+
+view - user to controller for validation (html js)
+
+
+js
+controller - $ajax requests
+           - get result from model
+           - validate if it exists
+           - 
+
+
+model - db query
+
+html 
+-> js (let me do sum before i send u this data) 
+-> php (heres the data nigga) 
+-> js (thanks nigga heres the data, messages if success or error) 
+-> html (got result)
+
+view must not see the model nigga its like aldub 
+only the controller must connect the bridge between those two niggas
+ 
+*/
