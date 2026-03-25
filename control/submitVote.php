@@ -55,7 +55,7 @@ foreach ($votes as $vote) {
 }
 
 // Check required positions have a vote or abstain
-$required_positions = [1000, 1001, 1006];
+$required_positions = [1000, 1001, 1003];
 foreach ($required_positions as $pos_id) {
     if (!isset($voted_positions[$pos_id])) {
         echo json_encode(['success' => false, 'message' => 'Please vote or abstain for all required positions']);
@@ -64,7 +64,7 @@ foreach ($required_positions as $pos_id) {
 }
 
 // Auto-abstain unused senator positions
-$senator_positions = [1002, 1003, 1004, 1005];
+$senator_positions = [1002];
 foreach ($senator_positions as $pos_id) {
     if (!isset($voted_positions[$pos_id])) {
         $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($studentvoter_id, $pos_id, NOW())";
