@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.left, .right {
+    flex: 1;
+    padding: 15px;
+}
+
+
+
+
