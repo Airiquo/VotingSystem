@@ -281,7 +281,7 @@ INSERT INTO Positions (name, election_id) VALUES
 ('President',      1000),                               -- position_id: 1000
 ('Vice-President', 1000),                               -- position_id: 1001
 ('Senator',        1000),                               -- position_id: 1002                           -- position_id: 1005
-('Vice-Governor',  1000);                               -- position_id: 1006
+('Vice-Governor',  1000);                               -- position_id: 1003
 
 
 -- ============================================================
