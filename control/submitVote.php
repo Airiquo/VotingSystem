@@ -40,22 +40,38 @@ if (isset($_SESSION['studentvoter_id'])) {
 }
 
 // Insert votes
+$voted_positions = [];
 foreach ($votes as $vote) {
     $cid = intval($vote['candidate_id']);
     $pid = intval($vote['position_id']);
 
-    // Handle abstain votes (candidate_id = 0)
     if ($cid === 0) {
-        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES (?, ?, NOW())";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $studentvoter_id, $pid);
+        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($studentvoter_id, $pid, NOW())";
     } else {
-        $sql = "INSERT INTO Votes (studentvoter_id, candidate_id, position_id, vote_date) VALUES (?, ?, ?, NOW())";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iii", $studentvoter_id, $cid, $pid);
+        $sql = "INSERT INTO Votes (studentvoter_id, candidate_id, position_id, vote_date) VALUES ($studentvoter_id, $cid, $pid, NOW())";
     }
-    $stmt->execute();
-    $stmt->close();
+    mysqli_query($conn, $sql);
+    $voted_positions[$pid] = true;
 }
+
+// Check required positions have a vote or abstain
+$required_positions = [1000, 1001, 1006];
+foreach ($required_positions as $pos_id) {
+    if (!isset($voted_positions[$pos_id])) {
+        echo json_encode(['success' => false, 'message' => 'Please vote or abstain for all required positions']);
+        exit;
+    }
+}
+
+// Auto-abstain unused senator positions
+$senator_positions = [1002, 1003, 1004, 1005];
+foreach ($senator_positions as $pos_id) {
+    if (!isset($voted_positions[$pos_id])) {
+        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($studentvoter_id, $pos_id, NOW())";
+        mysqli_query($conn, $sql);
+    }
+}
+
+mysqli_query($conn, "UPDATE StudentVoters SET has_voted = 1 WHERE studentvoter_id = $studentvoter_id");
 
 echo json_encode(['success' => true, 'votes_count' => count($votes)]);
