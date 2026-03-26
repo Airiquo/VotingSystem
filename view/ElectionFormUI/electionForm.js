@@ -1,7 +1,7 @@
 
 
 
-var positionRules = {
+let positionRules = {
     president: 1,
     vice_president: 1,
     vice_governor: 1,
@@ -9,9 +9,9 @@ var positionRules = {
 };
 
 function disableButton(positionName, checkbox) {
-    var boxes = document.querySelectorAll('input[type="checkbox"][name="' + positionName + '"]');
-    var ruleMax = positionRules[positionName] || 1;
-    var selected = 0;
+    let boxes = document.querySelectorAll('input[type="checkbox"][name="' + positionName + '"]');
+    let ruleMax = positionRules[positionName] || 1;
+    let selected = 0;
     
     boxes.forEach(function(box) {
         if (box.checked && box.value !== 'abstain') selected++;
@@ -37,38 +37,55 @@ function disableButton(positionName, checkbox) {
     }
 }
 
-    // Initialize form submission
-    $("#submitBtn").click(submitVote);
+function buildVoteObject(checkbox) {
+    return {
+        candidate_id: parseInt(checkbox.getAttribute('data-candidate-id')),
+        position_id: parseInt(checkbox.getAttribute('data-position-id'))
+    };
+}
 
-    function submitVote() {
-        const votes = [];
-        document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(checkbox) {
-            votes.push({
-                candidate_id: parseInt(checkbox.getAttribute('data-candidate-id')),
-                position_id: parseInt(checkbox.getAttribute('data-position-id'))
-            });
-        });
+function buildVoteFormData(checkboxes) {
+    const formData = new FormData();
+    checkboxes.forEach(function(checkbox) {
+        formData.append('votes[]', JSON.stringify(buildVoteObject(checkbox)));
+    });
+    return formData;
+}
 
-        if (!confirm("Are you sure you want to submit your vote?")) return;
-
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Submitting...';
-
-        $.ajax({
-            url: "../../control/submitVote.php",
-            type: "post",
-            contentType: "application/json",
-            data: JSON.stringify(votes),
-            success: function(res) {
-                if (res.success) {
-                    alert('Vote submitted successfully!');
-                    window.location.href = '../../index.html';
-                } else {
-                    alert('Error: ' + res.message);
-                    btn.disabled = false;
-                    btn.textContent = 'Submit Vote';
-                }
-            }
-        });
+function submitVote() {
+    let chkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    
+    if (chkboxes.length === 0) {
+        alert('Please select at least one option');
+        return;
     }
+
+    if (!confirm("Are you sure you want to submit your vote?")) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const formData = buildVoteFormData(chkboxes);
+
+    $.ajax({
+        url: "../../control/submitVote.php",
+        type: "post",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            if (res.success) {
+                alert('Vote submitted successfully!');
+                window.location.href = '../../index.html';
+            } else {
+                alert('Error: ' + res.message);
+                btn.disabled = false;
+                btn.textContent = 'Submit Vote';
+            }
+        }
+    });
+}
+
+// Initialize form submission
+$("#submitBtn").click(submitVote);
