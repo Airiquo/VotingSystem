@@ -64,13 +64,11 @@ foreach ($required_positions as $pos_id) {
 }
 
 // Auto-abstain unused senator positions
-if (!isset($voted_positions[1002])) {
-    for ($i = 0; $i < 4; $i++) {
-        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($studentvoter_id, 1002, NOW())";
-        if (!mysqli_query($conn, $sql)) {
-            echo json_encode(['success' => false, 'message' => 'Error inserting senator abstain: ' . mysqli_error($conn)]);
-            exit;
-        }
+$senator_positions = [1002];
+foreach ($senator_positions as $pos_id) {
+    if (!isset($voted_positions[$pos_id])) {
+        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($studentvoter_id, $pos_id, NOW())";
+        mysqli_query($conn, $sql);
     }
 }
 
