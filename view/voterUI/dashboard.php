@@ -30,7 +30,7 @@
         </div>
         <div id="menu_items">
             <a class="items" href="dashboard.php">Dashboard</a>
-            <a class="items" href="./electionForm.php">Election Form</a>
+            <a class="items" href="ElectionFormUI/electionFormUI.php">Election Form</a>
             <a class="items" href="./voterSettings.php">Settings</a>
         </div>
     </div>

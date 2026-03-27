@@ -77,6 +77,20 @@
         return $role_id;
     }
 
+    function getStudentVoterID($user_id){
+        global $conn;
+        
+        $sql = "SELECT studentvoter_id FROM StudentVoters WHERE user_id = '$user_id'";
+        $r_sql = $conn->query($sql);
+
+        if($r_sql->num_rows > 0){
+            $row = $r_sql->fetch_assoc();
+            return $row["studentvoter_id"];
+        } else {
+            return null;
+        }
+    }
+    
     function getUserActivatedStatus($username){
         global $conn;
         
