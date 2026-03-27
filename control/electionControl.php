@@ -22,7 +22,7 @@ function getStudentVoterId() {
     
     if (isset($_SESSION['user_id'])) {
         include("../model/readOperations.php");
-        $studentvoter_id = getStudentVoterId($_SESSION['user_id']);
+        $studentvoter_id = getStudentVoterID($_SESSION['user_id']);
 
         if ($studentvoter_id === null) {
             return ['success' => false, 'message' => 'User is not registered as a student voter'];
