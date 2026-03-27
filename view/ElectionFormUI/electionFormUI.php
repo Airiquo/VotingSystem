@@ -44,15 +44,15 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>President (1)</h2>
                     <input type="checkbox"
                         name="president"
-                        data-position-id="1000"
+                        data-position-id="1"
                         data-candidate-id="1000"
                         onclick="disableButton('president', this)">
                     <label>Juan Dela Cruz</label><br>
 
                     <input type="checkbox"
                         value="abstain"
-                        data-position-id="1000"
-                        data-candidate-id="0"
+                        data-position-id="1"
+                        data-candidate-id=""
                         name="president"
                         onclick="disableButton('president', this)">
                     <label>Abstain</label>
@@ -63,15 +63,15 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Vice-President (1)</h2>
                     <input type="checkbox"
                         name="vice_president"
-                        data-position-id="1001"
+                        data-position-id="2"
                         data-candidate-id="1001"
                         onclick="disableButton('vice_president', this)">
                     <label>Maria Garcia</label><br>
 
                     <input type="checkbox"
                         value="abstain"
-                        data-position-id="1001"
-                        data-candidate-id="0"
+                        data-position-id="2"
+                        data-candidate-id=""
                         name="vice_president"
                         onclick="disableButton('vice_president', this)">
                     <label>Abstain</label>
@@ -82,31 +82,39 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Senators (4)</h2>
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1002"
                         onclick="disableButton('senator', this)">
                     <label>Carlos Lopez</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1003"
                         onclick="disableButton('senator', this)">
                     <label>Ana Martinez</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1004"
                         onclick="disableButton('senator', this)">
                     <label>Jose Rodriguez</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1005"
                         onclick="disableButton('senator', this)">
                     <label>Miguel Gonzales</label><br>
+
+                    <input type="checkbox"
+                        value="abstain"
+                        data-position-id="3"
+                        data-candidate-id=""
+                        name="senator"
+                        onclick="disableButton('senator', this)">
+                    <label>Abstain</label>
                 </div>
 
                 <!-- Vice-Governor | position_id = 1005 -->
@@ -114,15 +122,15 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Vice-Governor (1)</h2>
                     <input type="checkbox"
                         name="vice_governor"
-                        data-position-id="1003"
+                        data-position-id="4"
                         data-candidate-id="1006"
                         onclick="disableButton('vice_governor', this)">
                     <label>Luisa Hernandez</label><br>
 
                     <input type="checkbox"
                         value="abstain"
-                        data-position-id="1003"
-                        data-candidate-id="0"
+                        data-position-id="4"
+                        data-candidate-id=""
                         name="vice_governor"
                         onclick="disableButton('vice_governor', this)">
                     <label>Abstain</label>
@@ -139,7 +147,7 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>President (1)</h2>
                     <input type="checkbox"
                         name="president"
-                        data-position-id="1000"
+                        data-position-id="1"
                         data-candidate-id="1008"
                         onclick="disableButton('president', this)">
                     <label>Ramon Castillo</label><br><br>
@@ -150,7 +158,7 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Vice-President (1)</h2>
                     <input type="checkbox"
                         name="vice_president"
-                        data-position-id="1001"
+                        data-position-id="2"
                         data-candidate-id="1009"
                         onclick="disableButton('vice_president', this)">
                     <label>Elena Morales</label><br><br>
@@ -161,28 +169,28 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Senators (4)</h2>
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1010"
                         onclick="disableButton('senator', this)">
                     <label>Diego Navarro</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1011"
                         onclick="disableButton('senator', this)">
                     <label>Isabella Reyes</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1012"
                         onclick="disableButton('senator', this)">
                     <label>Marco Santiago</label><br>
 
                     <input type="checkbox"
                         name="senator"
-                        data-position-id="1002"
+                        data-position-id="3"
                         data-candidate-id="1015"
                         onclick="disableButton('senator', this)">
                     <label>Camille Fuentes</label><br><br>
@@ -193,7 +201,7 @@ if (isset($_SESSION['studentvoter_id'])) {
                     <h2>Vice-Governor (1)</h2>
                     <input type="checkbox"
                         name="vice_governor"
-                        data-position-id="1003"
+                        data-position-id="4"
                         data-candidate-id="1013"
                         onclick="disableButton('vice_governor', this)">
                     <label>Gabrielle Valdez</label><br>

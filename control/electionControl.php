@@ -4,13 +4,6 @@ include("../model/dbconn.php");
 include("../model/electionModel.php");
 session_start();
 
-function validateDatabaseConnection($conn) {
-    if ($conn->connect_error) {
-        return ['success' => false, 'message' => 'DB Error: ' . $conn->connect_error];
-    }
-    return ['success' => true];
-}
-
 function getVotesFromPost() {
     $votesRaw = isset($_POST['votes']) ? $_POST['votes'] : [];
     
@@ -29,7 +22,7 @@ function getStudentVoterId() {
     
     if (isset($_SESSION['user_id'])) {
         include("../model/readOperations.php");
-        $studentvoter_id = getStudentVoterID($_SESSION['user_id']);
+        $studentvoter_id = getStudentVoterId($_SESSION['user_id']);
 
         if ($studentvoter_id === null) {
             return ['success' => false, 'message' => 'User is not registered as a student voter'];
@@ -42,11 +35,6 @@ function getStudentVoterId() {
 }
 
 function handleSubmitVote($conn) {
-    // Validate database connection
-    $dbCheck = validateDatabaseConnection($conn);
-    if (!$dbCheck['success']) {
-        return $dbCheck;
-    }
 
     // Get votes from POST
     $votesResult = getVotesFromPost();
@@ -68,14 +56,15 @@ function handleSubmitVote($conn) {
         return $result;
     }
     $voted_positions = $result['voted_positions'];
+    $vote_counts = $result['vote_counts'] ?? [];
 
     // Validate required positions
     if (!validateRequiredPositions($voted_positions)) {
         return ['success' => false, 'message' => 'Please vote or abstain for all required positions'];
     }
 
-    // Auto-abstain unused positions
-    autoAbstainUnusedPositions($conn, $studentvoter_id, $voted_positions);
+    // Auto-abstain unused positions and unfilled senator slots
+    autoAbstainUnusedPositions($conn, $studentvoter_id, $voted_positions, $vote_counts);
 
     // Mark voter as voted
     markVoterAsVoted($conn, $studentvoter_id);
@@ -83,7 +72,19 @@ function handleSubmitVote($conn) {
     return ['success' => true, 'votes_count' => count($votes)];
 }
 
-$response = handleSubmitVote($conn);
+//error handling for the entire submission process
+try {
+    $response = handleSubmitVote($conn);
+} catch (Exception $e) {
+    error_log("Vote submission error: " . $e->getMessage());
+    $response = ['success' => false, 'message' => 'Server error: ' . $e->getMessage()];
+}
+
+// Log all errors
+if (isset($response) && !$response['success']) {
+    error_log("Vote submission failed: " . json_encode($response));
+}
+
 echo json_encode($response);
 
 

@@ -90,12 +90,12 @@ CREATE TABLE `VotingSystem`.`Elections` (
 -- ============================================================
 
 CREATE TABLE `VotingSystem`.`Positions` (
-    `position_id` INT          NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(255) NOT NULL,
-    `election_id` INT          NOT NULL,
+    `position_id` INT NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `election_id` INT NOT NULL,
     PRIMARY KEY (`position_id`),
     FOREIGN KEY (`election_id`) REFERENCES `Elections`(`election_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1000;
+) ENGINE=InnoDB;
 
 
 -- ============================================================
@@ -135,30 +135,14 @@ CREATE TABLE `VotingSystem`.`Votes` (
     `vote_id`         INT      NOT NULL AUTO_INCREMENT,
     `vote_date`       DATETIME          DEFAULT CURRENT_TIMESTAMP,
     `studentvoter_id` INT      NOT NULL,
-    `candidate_id`    INT      NOT NULL,
+    `candidate_id`    INT      NULL,
     `position_id`     INT      NOT NULL,
     PRIMARY KEY (`vote_id`),
-    UNIQUE (`studentvoter_id`, `candidate_id`),
+    UNIQUE (studentvoter_id, position_id, candidate_id),
     FOREIGN KEY (`studentvoter_id`) REFERENCES `StudentVoters`(`studentvoter_id`),
     FOREIGN KEY (`candidate_id`)    REFERENCES `Candidates`(`candidate_id`),
     FOREIGN KEY (`position_id`)     REFERENCES `Positions`(`position_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1000;
-
-
--- ============================================================
--- SCHEMA: ABSTAIN VOTES
--- ============================================================
-
-CREATE TABLE `VotingSystem`.`AbstainVotes` (
-    `abstain_vote_id` INT      NOT NULL AUTO_INCREMENT,
-    `studentvoter_id` INT      NOT NULL,
-    `position_id`     INT      NOT NULL,
-    `vote_date`       DATETIME NOT NULL,
-    PRIMARY KEY (`abstain_vote_id`),
-    FOREIGN KEY (`studentvoter_id`) REFERENCES `StudentVoters`(`studentvoter_id`),
-    FOREIGN KEY (`position_id`)     REFERENCES `Positions`(`position_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1000;
-
+) ENGINE = InnoDB AUTO_INCREMENT = 1;
 
 -- ============================================================
 -- DATA: ROLES
@@ -277,11 +261,11 @@ INSERT INTO Elections (title, status, start_date, end_date) VALUES
 -- position_id 1000–1005
 -- ============================================================
 
-INSERT INTO Positions (name, election_id) VALUES
-('President',      1000),                               -- position_id: 1000
-('Vice-President', 1000),                               -- position_id: 1001
-('Senator',        1000),                               -- position_id: 1002                           -- position_id: 1005
-('Vice-Governor',  1000);                               -- position_id: 1003
+INSERT INTO Positions (position_id, name, election_id) VALUES
+(1, 'President',      1000),                               -- position_id: 1
+(2, 'Vice-President', 1000),                               -- position_id: 2
+(3, 'Senator',        1000),                               -- position_id: 3                          
+(4, 'Vice-Governor',  1000);                               -- position_id: 4
 
 
 -- ============================================================
@@ -320,19 +304,19 @@ INSERT INTO Partylists (name, election_id) VALUES
 
 INSERT INTO Candidates (partylist_id, student_id, position_id) VALUES
 -- Partido Uno
-(1000, 1000, 1000),                                     -- candidate_id: 1000 | Juan Dela Cruz    -> President
-(1000, 1001, 1001),                                     -- candidate_id: 1001 | Maria Garcia      -> Vice-President
-(1000, 1002, 1002),                                     -- candidate_id: 1002 | Carlos Lopez      -> Senator
-(1000, 1003, 1002),                                     -- candidate_id: 1003 | Ana Martinez      -> Senator
-(1000, 1004, 1002),                                     -- candidate_id: 1004 | Jose Rodriguez    -> Senator
-(1000, 1005, 1003),                                     -- candidate_id: 1005 | Luisa Hernandez   -> Vice-Governor
-(1000, 1006, 1002),                                     -- candidate_id: 1006 | Miguel Gonzales   -> Senator
+(1000, 1000, 1),                                     -- candidate_id: 1000 | Juan Dela Cruz    -> President
+(1000, 1001, 2),                                     -- candidate_id: 1001 | Maria Garcia      -> Vice-President
+(1000, 1002, 3),                                     -- candidate_id: 1002 | Carlos Lopez      -> Senator
+(1000, 1003, 3),                                     -- candidate_id: 1003 | Ana Martinez      -> Senator
+(1000, 1004, 3),                                     -- candidate_id: 1004 | Jose Rodriguez    -> Senator
+(1000, 1005, 4),                                     -- candidate_id: 1005 | Luisa Hernandez   -> Vice-Governor
+(1000, 1006, 3),                                     -- candidate_id: 1006 | Miguel Gonzales   -> Senator
 
 -- Partido Dos
-(1001, 1008, 1000),                                     -- candidate_id: 1007 | Ramon Castillo    -> President
-(1001, 1009, 1001),                                     -- candidate_id: 1008 | Elena Morales     -> Vice-President
-(1001, 1010, 1002),                                     -- candidate_id: 1009 | Diego Navarro     -> Senator
-(1001, 1011, 1002),                                     -- candidate_id: 1010 | Isabella Reyes    -> Senator
-(1001, 1012, 1002),                                     -- candidate_id: 1011 | Marco Santiago    -> Senator
-(1001, 1013, 1003),                                     -- candidate_id: 1012 | Gabrielle Valdez  -> Vice-Governor
-(1001, 1015, 1002);                                     -- candidate_id: 1013 | Camille Fuentes   -> Senator
+(1001, 1008, 1),                                     -- candidate_id: 1007 | Ramon Castillo    -> President
+(1001, 1009, 2),                                     -- candidate_id: 1008 | Elena Morales     -> Vice-President
+(1001, 1010, 3),                                     -- candidate_id: 1009 | Diego Navarro     -> Senator
+(1001, 1011, 3),                                     -- candidate_id: 1010 | Isabella Reyes    -> Senator
+(1001, 1012, 3),                                     -- candidate_id: 1011 | Marco Santiago    -> Senator
+(1001, 1013, 4),                                     -- candidate_id: 1012 | Gabrielle Valdez  -> Vice-Governor
+(1001, 1015, 3);                                     -- candidate_id: 1013 | Camille Fuentes   -> Senator

@@ -5,21 +5,20 @@ function decodeVoteString($voteStr) {
 }
 
 function insertVote($conn, $studentvoter_id, $candidate_id, $position_id) {
-    $cid = intval($candidate_id);
     $pid = intval($position_id);
     $svid = intval($studentvoter_id);
     
-    if ($cid === 0) {
-        $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($svid, $pid, NOW())";
-    } else {
-        $sql = "INSERT INTO Votes (studentvoter_id, candidate_id, position_id, vote_date) VALUES ($svid, $cid, $pid, NOW())";
-    }
+    // Handle NULL for abstain votes (when candidate_id is null)
+    $cid_val = ($candidate_id === null || $candidate_id === '') ? 'NULL' : intval($candidate_id);
+    
+    $sql = "INSERT INTO Votes (studentvoter_id, candidate_id, position_id, vote_date) VALUES ($svid, $cid_val, $pid, NOW())";
     
     return mysqli_query($conn, $sql);
 }
 
 function processVotes($conn, $studentvoter_id, $votes) {
     $voted_positions = [];
+    $vote_counts = []; // Track count of votes per position
     
     foreach ($votes as $vote) {
         $cid = $vote['candidate_id'];
@@ -30,13 +29,17 @@ function processVotes($conn, $studentvoter_id, $votes) {
         }
         
         $voted_positions[$pid] = true;
+        // Count votes per position (only count non-null/non-abstain votes)
+        if ($cid !== null && $cid !== '') {
+            $vote_counts[$pid] = ($vote_counts[$pid] ?? 0) + 1;
+        }
     }
     
-    return ['success' => true, 'voted_positions' => $voted_positions];
+    return ['success' => true, 'voted_positions' => $voted_positions, 'vote_counts' => $vote_counts];
 }
 
 function validateRequiredPositions($voted_positions) {
-    $required_positions = [1000, 1001, 1003];
+    $required_positions = [1,2,3,4];
     
     foreach ($required_positions as $pos_id) {
         if (!isset($voted_positions[$pos_id])) {
@@ -47,15 +50,22 @@ function validateRequiredPositions($voted_positions) {
     return true;
 }
 
-function autoAbstainUnusedPositions($conn, $studentvoter_id, $voted_positions) {
-    $senator_positions = [1002];
+function autoAbstainUnusedPositions($conn, $studentvoter_id, $voted_positions, $vote_counts = []) {
+    $svid = intval($studentvoter_id);
     
-    foreach ($senator_positions as $pos_id) {
-        if (!isset($voted_positions[$pos_id])) {
-            $svid = intval($studentvoter_id);
-            $sql = "INSERT INTO AbstainVotes (studentvoter_id, position_id, vote_date) VALUES ($svid, $pos_id, NOW())";
-            mysqli_query($conn, $sql);
-        }
+    // Handle senators: max 4 votes allowed
+    // Insert abstain votes for unused slots
+    $senator_pos_id = 3;
+    $max_senator_votes = 4;
+    
+    // Get current senator vote count
+    $senator_vote_count = $vote_counts[$senator_pos_id] ?? 0;
+    $unused_slots = $max_senator_votes - $senator_vote_count;
+    
+    // Insert abstain votes for unused slots
+    for ($i = 0; $i < $unused_slots; $i++) {
+        $sql = "INSERT INTO Votes (studentvoter_id, candidate_id, position_id, vote_date) VALUES ($svid, NULL, $senator_pos_id, NOW())";
+        mysqli_query($conn, $sql);
     }
 }
 

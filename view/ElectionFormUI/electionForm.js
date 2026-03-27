@@ -1,5 +1,5 @@
-
-
+// Initialize form submission
+$("#submitBtn").click(submitVote);
 
 let positionRules = {
     president: 1,
@@ -37,13 +37,16 @@ function disableButton(positionName, checkbox) {
     }
 }
 
+//converts a checkbox element to a vote object for submission
 function buildVoteObject(checkbox) {
+    const candidateId = checkbox.getAttribute('data-candidate-id');
     return {
-        candidate_id: parseInt(checkbox.getAttribute('data-candidate-id')),
+        candidate_id: candidateId === '' ? null : parseInt(candidateId),
         position_id: parseInt(checkbox.getAttribute('data-position-id'))
     };
 }
 
+//converts checkboxes to FormData for AJAX submission
 function buildVoteFormData(checkboxes) {
     const formData = new FormData();
     checkboxes.forEach(function(checkbox) {
@@ -60,6 +63,16 @@ function submitVote() {
         return;
     }
 
+    // Validate that all required positions are filled
+    const requiredPositions = ['president', 'vice_president', 'senator', 'vice_governor'];
+    for (const position of requiredPositions) {
+        let selected = document.querySelectorAll('input[type="checkbox"][name="' + position + '"]:checked');
+        if (selected.length === 0) {
+            alert('Please vote or abstain for ' + position.replace('_', ' '));
+            return;
+        }
+    }
+
     if (!confirm("Are you sure you want to submit your vote?")) return;
 
     const btn = document.getElementById('submitBtn');
@@ -69,7 +82,7 @@ function submitVote() {
     const formData = buildVoteFormData(chkboxes);
 
     $.ajax({
-        url: "../../control/submitVote.php",
+        url: "../../control/electionControl.php",
         type: "post",
         data: formData,
         processData: false,
@@ -87,5 +100,4 @@ function submitVote() {
     });
 }
 
-// Initialize form submission
-$("#submitBtn").click(submitVote);
+
