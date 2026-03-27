@@ -4,6 +4,25 @@ USE VotingSystem;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- ============================================================
+-- EXTERNAL INFO
+-- ============================================================
+
+CREATE TABLE `VotingSystem`.`College` (
+    `college_id`   INT          NOT NULL AUTO_INCREMENT,
+    `college_name` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`college_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1000;
+
+CREATE TABLE `VotingSystem`.`Students` (
+    `student_id`  INT          NOT NULL AUTO_INCREMENT,
+    `first_name`  VARCHAR(255) NOT NULL,
+    `middle_name` VARCHAR(255),
+    `last_name`   VARCHAR(255) NOT NULL,
+    `college_id`  INT          NOT NULL,
+    PRIMARY KEY (`student_id`),
+    FOREIGN KEY (`college_id`) REFERENCES `College`(`college_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1000;
 
 -- ============================================================
 -- ACCOUNTS
@@ -103,27 +122,6 @@ CREATE TABLE `VotingSystem`.`Votes` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1;
 
 
--- ============================================================
--- EXTERNAL INFO
--- ============================================================
-
-CREATE TABLE `VotingSystem`.`College` (
-    `college_id`   INT          NOT NULL AUTO_INCREMENT,
-    `college_name` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`college_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1000;
-
-CREATE TABLE `VotingSystem`.`Students` (
-    `student_id`  INT          NOT NULL AUTO_INCREMENT,
-    `first_name`  VARCHAR(255) NOT NULL,
-    `middle_name` VARCHAR(255),
-    `last_name`   VARCHAR(255) NOT NULL,
-    `college_id`  INT          NOT NULL,
-    PRIMARY KEY (`student_id`),
-    FOREIGN KEY (`college_id`) REFERENCES `College`(`college_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1000;
-
-
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -170,7 +168,7 @@ INSERT INTO Roles (role_name) VALUES ('student_voter');  -- role_id: 1001
 
 -- Users: Admin (user_id: 1000)
 INSERT INTO Users (username, email, password, role_id, activated_status) VALUES
-('tephL', 'tephL@example.com', '123456', 1000, 1);      -- user_id: 1000
+('tephL', 'tephL@example.com', '12345678', 1000, 1);      -- user_id: 1000
 
 -- Users: Student Voters (user_id: 1001–1016)
 INSERT INTO Users (username, email, password, role_id) VALUES
