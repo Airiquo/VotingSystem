@@ -23,10 +23,15 @@ function disableButton(positionName, checkbox) {
         });
         return;
     }
+
+    if (checkbox.value !== 'abstain' && checkbox.checked && ruleMax === 1) {
+        boxes.forEach(function(box) {
+            if (box !== checkbox) box.checked = false;
+        });
+    }
     
-    if (checkbox.checked && selected > ruleMax) {
+    if (checkbox.checked && selected > ruleMax && ruleMax !== 1) {
         checkbox.checked = false;
-        alert('Maximum ' + ruleMax + ' allowed for ' + positionName);
         return;
     }
     
@@ -82,7 +87,7 @@ function submitVote() {
     const formData = buildVoteFormData(chkboxes);
 
     $.ajax({
-        url: "/VotingSystem/control/electionControl.php",
+        url: "../../../control/electionControl.php",       
         type: "post",
         data: formData,
         processData: false,

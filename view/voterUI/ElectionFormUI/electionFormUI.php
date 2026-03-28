@@ -24,11 +24,25 @@ if (isset($_SESSION['studentvoter_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="electionForm.css">
+    <link rel="stylesheet" href="../../styles/voterUI.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Document</title>
 </head>
 
 <body>
+
+    <div id="sidebar">
+        <div id="title">
+            <h1>Voting System</h1>
+            <p>Voter Page</p>
+        </div>
+        <div id="menu_items">
+            <a class="items" href="../dashboard.php">Dashboard</a>
+            <a class="items" href="ElectionFormUI/electionFormUI.php">Election Form</a>
+            <a class="items" href="../voterSettings.php">Settings</a>
+        </div>
+    </div>
+
     <form id="voteForm">
 
         <h1>Election Form</h1>
@@ -215,6 +229,7 @@ if (isset($_SESSION['studentvoter_id'])) {
     </form>
 
     <script src="electionForm.js"></script>
+    <script src="../voterUtils.js"></script>
 </body>
 
 </html>

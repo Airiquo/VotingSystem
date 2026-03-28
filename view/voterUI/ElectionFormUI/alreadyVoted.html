@@ -2,11 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../styles/voterUI.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <h1>You have already voted.</h1>
-    <p>Thank you for participating in the election.</p>
+    <div id="sidebar">
+        <div id="title">
+            <h1>Voting System</h1>
+            <p>Voter Page</p>
+        </div>
+        <div id="menu_items">
+            <a class="items" href="../dashboard.php">Dashboard</a>
+            <a class="items" href="ElectionFormUI/electionFormUI.php">Election Form</a>
+            <a class="items" href="../voterSettings.php">Settings</a>
+        </div>
+    </div>
+
+    <div>
+        <h1>You have already voted.</h1>
+        <p>Thank you for participating in the election.</p>
+    </div>
+
+    <script src="../voterUtils.js"></script>
 </body>
 </html>
